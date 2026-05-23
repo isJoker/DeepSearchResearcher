@@ -17,6 +17,11 @@ ragflow_client = RAGFlow(api_key=api_key,base_url=base_url)
 # 1. 查询现在知识库中有哪些聊天助手和对应知识库的信息 （方便我们知道rag可以给我们提供哪些数据）
 @tool
 def get_assistant_list() -> str:
+    """
+    【工具功能】获取 RAGFlow 中所有聊天助手信息
+    适用场景：Agent 需要确认当前有哪些可用助手，及每个助手绑定的知识库范围时调用
+    返回：结构化字符串（助手名称+功能介绍+关联知识库）
+    """
     monitor.report_tool(tool_name="ragflow聊天助手列表查询工具：get_assistant_list")
 
     try:

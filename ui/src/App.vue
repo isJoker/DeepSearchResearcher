@@ -350,8 +350,8 @@ onMounted(() => {
       <!-- Welcome Screen -->
       <div v-if="isWelcomeScreen" class="welcome-screen">
         <div class="welcome-text">
-          <h1>Hello, User</h1>
-          <h2>How can I help you today?</h2>
+          <h1>Greetings, user</h1>
+          <h2>What can I do for you today?</h2>
         </div>
       </div>
 
@@ -464,7 +464,7 @@ onMounted(() => {
           </button>
         </div>
         <div class="footer-text">
-          DeepAgents may display inaccurate info, including about people, so double-check its responses.
+          DeepAgents can sometimes provide incorrect information, including details about individuals, so always verify its answers.
         </div>
       </footer>
     </main>
@@ -498,14 +498,14 @@ onMounted(() => {
 <style>
 /* Global Resets & Variables */
 :root {
-  --bg-dark: #131314;
-  --surface-dark: #1E1F20;
-  --surface-light: #2D2E2F;
-  --text-primary: #E3E3E3;
-  --text-secondary: #C4C7C5;
-  --accent-blue: #A8C7FA;
-  --user-msg-bg: #2D2E30; /* Darker gray for user */
-  --border-color: #444746;
+  --bg-dark: #F7F8FC; /* previously #131314 */
+  --surface-dark: #FFFFFF; /* previously #1E1F20 */
+  --surface-light: #F1F2F7; /* previously #2D2E2F */
+  --text-primary: #1F2933; /* previously #E3E3E3 */
+  --text-secondary: #4A5568; /* previously #C4C7C5 */
+  --accent-blue: #4E75F6; /* previously #A8C7FA */
+  --user-msg-bg: #DDE5FF; /* previously #2D2E30 */
+  --border-color: #CBD5E1; /* previously #444746 */
 }
 
 body {
@@ -629,8 +629,8 @@ body {
 }
 
 .file-link:hover {
-  background: #2D2E30;
-  border-color: #444;
+  background: #f1f2f7; /* previously #2D2E30 */
+  border-color: #d6ddea; /* previously #444 */
 }
 
 .folder-btn {
@@ -771,7 +771,7 @@ body {
 }
 
 .markdown-body pre {
-  background: #2D2E30;
+  background: #f5f7ff; /* previously #2D2E30 */
   padding: 1rem;
   border-radius: 8px;
   overflow-x: auto;
@@ -807,13 +807,13 @@ body {
 }
 
 .process-section summary:hover {
-  background: #2D2E30;
+  background: #f1f2f7; /* previously #2D2E30 */
 }
 
 .spinner {
   width: 12px;
   height: 12px;
-  border: 2px solid var(--text-secondary);
+  border: 2px solid #cbd5e1; /* previously var(--text-secondary) */
   border-top-color: transparent;
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -822,16 +822,16 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .process-steps {
-  background: #1E1F20;
+  background: #f8f9ff; /* previously #1E1F20 */
   border-radius: 8px;
   padding: 0.5rem;
   margin-top: 0.5rem;
-  border: 1px solid #333;
+  border: 1px solid #d6ddea; /* previously #333 */
 }
 
 .step-item {
   padding: 0.5rem;
-  border-left: 2px solid #333;
+  border-left: 2px solid #7A89AF; /* previously #333 */
   margin-left: 0.5rem;
   margin-bottom: 0.5rem;
 }
@@ -839,7 +839,7 @@ body {
 .step-header {
   font-size: 0.85rem;
   font-weight: 500;
-  color: #E3E3E3;
+  color: #1F2933; /* previously #E3E3E3 */
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -848,8 +848,8 @@ body {
 .step-details pre {
   margin: 0.5rem 0 0 0;
   font-size: 0.75rem;
-  color: #999;
-  background: #111;
+  color: #475569; /* previously #999 */
+  background: #ffffff; /* previously #111 */
   padding: 0.5rem;
   border-radius: 4px;
   overflow-x: auto;
@@ -920,7 +920,7 @@ body {
 .input-container {
   width: 100%;
   max-width: 800px;
-  background: #1E1F20;
+  background: #f1f2f7; /* previously #1E1F20 */
   border-radius: 32px;
   display: flex;
   align-items: center;
@@ -929,7 +929,7 @@ body {
 }
 
 .input-container.focused {
-  background: #2D2E30;
+  background: #e0e4f1; /* previously #2D2E30 */
 }
 
 textarea {
@@ -959,12 +959,12 @@ textarea {
 }
 
 .send-btn:disabled {
-  color: #444746;
+  color: var(--text-secondary);
   cursor: default;
 }
 
 .send-btn:not(:disabled):hover {
-  background: #3c4043;
+  background: #d1d5df; /* previously #3c4043 */
 }
 
 .upload-btn {
@@ -981,17 +981,17 @@ textarea {
 }
 
 .upload-btn:hover {
-  background: #3c4043;
+  background: #d1d5df; /* previously #3c4043 */
 }
 
 .upload-btn:disabled {
-  color: #444746;
+  color: var(--text-secondary);
   cursor: default;
 }
 
 .footer-text {
   font-size: 0.75rem;
-  color: #444746;
+  color: #4a5568;
   text-align: center;
 }
 

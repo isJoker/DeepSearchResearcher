@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>technical-solution-detailed</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1
+id="deepsearchresearcher-ui-详细技术方案实现文档">DeepSearchResearcher
+UI 详细技术方案实现文档</h1>
+<h2 id="1-项目概述">1. 项目概述</h2>
+<h3 id="11-项目背景">1.1 项目背景</h3>
+<p>DeepSearchResearcher UI 是一个基于 Vue 3 + TypeScript
+的现代化聊天界面，用于与后端 AI
+研究助手进行交互。该界面支持实时聊天、文件上传、任务执行状态跟踪、文件生成与下载等功能。</p>
+<h3 id="12-技术栈">1.2 技术栈</h3>
+<ul>
+<li><strong>前端框架</strong>: Vue 3.5.24 + Composition API +
+<code>&lt;script setup&gt;</code> 语法</li>
+<li><strong>构建工具</strong>: Vite (基于 rolldown-vite 7.2.5)</li>
+<li><strong>开发语言</strong>: TypeScript 5.9.3</li>
+<li><strong>HTTP 客户端</strong>: Axios 1.13.3</li>
+<li><strong>Markdown 渲染</strong>: marked 17.0.1</li>
+<li><strong>样式方案</strong>: CSS 变量 + 内联样式</li>
+<li><strong>实时通信</strong>: WebSocket</li>
+</ul>
+<h2 id="2-架构设计">2. 架构设计</h2>
+<h3 id="21-项目结构">2.1 项目结构</h3>
+<pre><code>ui/
+├── package.json              # 项目配置和依赖
+├── vite.config.ts           # Vite 构建配置
+├── tsconfig.json           # TypeScript 配置
+├── index.html              # 入口 HTML
+├── src/
+│   ├── main.ts             # 应用入口
+│   ├── App.vue             # 主应用组件（单文件组件）
+│   ├── style.css           # 全局样式
+│   ├── assets/             # 静态资源
+│   └── components/         # 组件目录
+└── public/                 # 公共资源</code></pre>
+<h3 id="22-核心设计理念">2.2 核心设计理念</h3>
+<ol type="1">
+<li><strong>单文件组件架构</strong>: 所有核心逻辑集中在
+<code>App.vue</code> 中，简化项目结构</li>
+<li><strong>响应式状态管理</strong>: 使用 Vue 3 Composition API 的
+<code>ref</code> 和 <code>computed</code></li>
+<li><strong>双向数据流</strong>: REST API 用于主动请求，WebSocket
+用于实时推送</li>
+<li><strong>模块化设计</strong>:
+功能按模块划分（聊天、文件管理、状态跟踪等）</li>
+</ol>
+<h2 id="3-状态管理方案">3. 状态管理方案</h2>
+<h3 id="31-核心状态定义">3.1 核心状态定义</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 消息接口</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">interface</span> Message {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  role<span class="op">:</span> <span class="st">&#39;user&#39;</span> <span class="op">|</span> <span class="st">&#39;ai&#39;</span> <span class="op">|</span> <span class="st">&#39;system&#39;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  content<span class="op">:</span> <span class="dt">string</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  logs<span class="op">?:</span> LogItem[]          <span class="co">// 思维过程日志</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  files<span class="op">?:</span> FileItem[]        <span class="co">// 生成的文件</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  timestamp<span class="op">?:</span> <span class="dt">number</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">// 主要状态变量</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> messages <span class="op">=</span> <span class="fu">ref</span><span class="op">&lt;</span>Message[]<span class="op">&gt;</span>([])          <span class="co">// 聊天消息列表</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> status <span class="op">=</span> <span class="fu">ref</span><span class="op">&lt;</span><span class="st">&#39;idle&#39;</span> <span class="op">|</span> <span class="st">&#39;running&#39;</span><span class="op">&gt;</span>(<span class="st">&#39;idle&#39;</span>) <span class="co">// 运行状态</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> fileList <span class="op">=</span> <span class="fu">ref</span><span class="op">&lt;</span><span class="dt">any</span>[]<span class="op">&gt;</span>([])              <span class="co">// 文件列表</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> socket <span class="op">=</span> <span class="fu">ref</span><span class="op">&lt;</span><span class="bu">WebSocket</span> <span class="op">|</span> <span class="dt">null</span><span class="op">&gt;</span>(<span class="kw">null</span>)   <span class="co">// WebSocket 连接</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> currentSessionPath <span class="op">=</span> <span class="fu">ref</span>(<span class="st">&#39;&#39;</span>)           <span class="co">// 当前会话路径</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> currentThreadId <span class="op">=</span> <span class="fu">ref</span>(crypto<span class="op">.</span><span class="fu">randomUUID</span>()) <span class="co">// 线程ID（持久化）</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> selectedFiles <span class="op">=</span> <span class="fu">ref</span><span class="op">&lt;</span><span class="bu">File</span>[]<span class="op">&gt;</span>([])        <span class="co">// 选中的上传文件</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> isSidebarOpen <span class="op">=</span> <span class="fu">ref</span>(<span class="kw">false</span>)             <span class="co">// 侧边栏开关状态</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">// 计算属性</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> isWelcomeScreen <span class="op">=</span> <span class="fu">computed</span>(() <span class="kw">=&gt;</span> messages<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">0</span>)</span></code></pre></div>
+<h3 id="32-状态管理特点">3.2 状态管理特点</h3>
+<ol type="1">
+<li><strong>响应式更新</strong>: 所有状态变量使用 <code>ref</code>
+包装，UI 自动响应变化</li>
+<li><strong>类型安全</strong>: 使用 TypeScript 接口定义数据结构</li>
+<li><strong>状态隔离</strong>: 不同功能模块的状态相对独立</li>
+<li><strong>持久化</strong>: <code>currentThreadId</code> 使用
+<code>crypto.randomUUID()</code> 生成，页面刷新前保持不变</li>
+</ol>
+<h3 id="33-状态更新策略">3.3 状态更新策略</h3>
+<ol type="1">
+<li><strong>直接赋值</strong>: 简单状态直接更新</li>
+<li><strong>数组操作</strong>: 消息列表使用
+<code>push</code>、<code>slice</code> 等操作</li>
+<li><strong>对象合并</strong>: 复杂对象使用展开运算符更新</li>
+<li><strong>条件更新</strong>: 根据业务逻辑选择性更新状态</li>
+</ol>
+<h2 id="4-数据流转机制">4. 数据流转机制</h2>
+<h3 id="41-数据流架构图">4.1 数据流架构图</h3>
+<pre><code>用户输入 → 前端处理 → REST API → 后端处理
+    ↑          ↓           ↑          ↓
+UI 更新 ← 状态更新 ← WebSocket ← 事件推送</code></pre>
+<h3 id="42-rest-api-通信">4.2 REST API 通信</h3>
+<table>
+<thead>
+<tr>
+<th>接口</th>
+<th>方法</th>
+<th>用途</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/api/upload</code></td>
+<td>POST</td>
+<td>文件上传</td>
+<td><code>FormData</code> (files, thread_id)</td>
+</tr>
+<tr>
+<td><code>/api/task</code></td>
+<td>POST</td>
+<td>提交任务</td>
+<td><code>{ query, thread_id }</code></td>
+</tr>
+<tr>
+<td><code>/api/files</code></td>
+<td>GET</td>
+<td>获取文件列表</td>
+<td><code>{ path }</code></td>
+</tr>
+<tr>
+<td><code>/api/download</code></td>
+<td>GET</td>
+<td>下载文件</td>
+<td><code>{ path }</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-websocket-事件处理">4.3 WebSocket 事件处理</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// WebSocket 连接</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> connectWebSocket <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> ws <span class="op">=</span> <span class="kw">new</span> <span class="bu">WebSocket</span>(<span class="vs">`ws://localhost:8000/ws/</span><span class="sc">${</span>currentThreadId<span class="op">.</span><span class="at">value</span><span class="sc">}</span><span class="vs">`</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  ws<span class="op">.</span><span class="at">onmessage</span> <span class="op">=</span> (<span class="bu">event</span>) <span class="kw">=&gt;</span> {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> data <span class="op">=</span> <span class="bu">JSON</span><span class="op">.</span><span class="fu">parse</span>(<span class="bu">event</span><span class="op">.</span><span class="at">data</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">handleSocketMessage</span>(data)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">// 事件处理器</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> handleSocketMessage <span class="op">=</span> (data<span class="op">:</span> <span class="dt">any</span>) <span class="kw">=&gt;</span> {</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> { <span class="bu">event</span><span class="op">,</span> eventData } <span class="op">=</span> data</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span> (<span class="bu">event</span>) {</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="st">&#39;session_created&#39;</span><span class="op">:</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>      <span class="co">// 更新会话路径和URL</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>      currentSessionPath<span class="op">.</span><span class="at">value</span> <span class="op">=</span> eventData<span class="op">.</span><span class="at">path</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">updateSessionUrl</span>(eventData<span class="op">.</span><span class="at">path</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      isSidebarOpen<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="kw">true</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fetchFiles</span>()</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="st">&#39;tool_start&#39;</span><span class="op">:</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>      <span class="co">// 添加工具执行日志</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addToolLog</span>(eventData<span class="op">.</span><span class="at">tool_name</span><span class="op">,</span> eventData<span class="op">.</span><span class="at">args</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fetchFiles</span>() <span class="co">// 刷新文件列表</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="st">&#39;assistant_call&#39;</span><span class="op">:</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>      <span class="co">// 添加助手调用日志</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addAssistantLog</span>(eventData<span class="op">.</span><span class="at">assistant_name</span><span class="op">,</span> eventData<span class="op">.</span><span class="at">args</span>)</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="st">&#39;task_result&#39;</span><span class="op">:</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>      <span class="co">// 更新AI消息内容</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>      <span class="fu">updateAIMessage</span>(eventData<span class="op">.</span><span class="at">result</span>)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>      status<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="st">&#39;idle&#39;</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fetchFiles</span>()</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="st">&#39;error&#39;</span><span class="op">:</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>      <span class="co">// 添加错误消息</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addSystemMessage</span>(<span class="vs">`Error: </span><span class="sc">${</span>data<span class="op">.</span><span class="at">message</span><span class="sc">}</span><span class="vs">`</span>)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>      status<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="st">&#39;idle&#39;</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h3 id="44-文件上传流程">4.4 文件上传流程</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> sendMessage <span class="op">=</span> <span class="kw">async</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 1. 验证输入</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> ((<span class="op">!</span>inputQuery<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="fu">trim</span>() <span class="op">&amp;&amp;</span> selectedFiles<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">0</span>) <span class="op">||</span> status<span class="op">.</span><span class="at">value</span> <span class="op">===</span> <span class="st">&#39;running&#39;</span>) <span class="cf">return</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 2. 更新UI状态</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  status<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="st">&#39;running&#39;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addUserMessage</span>(inputQuery<span class="op">.</span><span class="at">value</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addAIPlaceholderMessage</span>()</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 3. 文件上传（如果有）</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (selectedFiles<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="at">length</span> <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> formData <span class="op">=</span> <span class="kw">new</span> <span class="bu">FormData</span>()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    formData<span class="op">.</span><span class="fu">append</span>(<span class="st">&#39;thread_id&#39;</span><span class="op">,</span> currentThreadId<span class="op">.</span><span class="at">value</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    selectedFiles<span class="op">.</span><span class="at">value</span><span class="op">.</span><span class="fu">forEach</span>(file <span class="kw">=&gt;</span> formData<span class="op">.</span><span class="fu">append</span>(<span class="st">&#39;files&#39;</span><span class="op">,</span> file))</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span> {</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">await</span> axios<span class="op">.</span><span class="fu">post</span>(<span class="st">&#39;http://127.0.0.1:8000/api/upload&#39;</span><span class="op">,</span> formData<span class="op">,</span> {</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        headers<span class="op">:</span> { <span class="st">&#39;Content-Type&#39;</span><span class="op">:</span> <span class="st">&#39;multipart/form-data&#39;</span> }</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>      })</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addUploadSuccessLog</span>()</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">catch</span> (error) {</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">addUploadErrorLog</span>(error)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 4. 提交任务</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> payload <span class="op">=</span> { query<span class="op">:</span> inputQuery<span class="op">.</span><span class="at">value</span><span class="op">,</span> thread_id<span class="op">:</span> currentThreadId<span class="op">.</span><span class="at">value</span> }</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> res <span class="op">=</span> <span class="cf">await</span> axios<span class="op">.</span><span class="fu">post</span>(<span class="st">&#39;http://127.0.0.1:8000/api/task&#39;</span><span class="op">,</span> payload)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 5. 更新线程ID（如果需要）</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (res<span class="op">.</span><span class="at">data</span><span class="op">?.</span><span class="at">thread_id</span>) {</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>      currentThreadId<span class="op">.</span><span class="at">value</span> <span class="op">=</span> res<span class="op">.</span><span class="at">data</span><span class="op">.</span><span class="at">thread_id</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span> (error) {</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">addSystemMessage</span>(<span class="vs">`Request failed: </span><span class="sc">${</span>error<span class="op">.</span><span class="at">message</span><span class="sc">}</span><span class="vs">`</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    status<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="st">&#39;idle&#39;</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="5-核心功能模块">5. 核心功能模块</h2>
+<h3 id="51-聊天模块">5.1 聊天模块</h3>
+<h4 id="511-消息展示">5.1.1 消息展示</h4>
+<ul>
+<li><strong>用户消息</strong>: 右侧对齐，蓝色背景</li>
+<li><strong>AI消息</strong>:
+左侧对齐，包含头像、内容、思维过程、生成文件</li>
+<li><strong>系统消息</strong>: 居中显示，用于错误和状态提示</li>
+</ul>
+<h4 id="512-思维过程展示">5.1.2 思维过程展示</h4>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 思维过程日志结构</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">interface</span> LogItem {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  type<span class="op">:</span> <span class="st">&#39;tool&#39;</span> <span class="op">|</span> <span class="st">&#39;agent&#39;</span> <span class="op">|</span> <span class="st">&#39;info&#39;</span> <span class="op">|</span> <span class="st">&#39;success&#39;</span> <span class="op">|</span> <span class="st">&#39;error&#39;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  title<span class="op">:</span> <span class="dt">string</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  details<span class="op">:</span> <span class="dt">any</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  timestamp<span class="op">:</span> <span class="dt">string</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">// 展示方式：可折叠的详情面板</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>details<span class="op">&gt;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">&lt;</span>summary<span class="op">&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;</span>span <span class="kw">class</span><span class="op">=</span><span class="st">&quot;spinner&quot;</span> v<span class="op">-</span><span class="cf">if</span><span class="op">=</span><span class="st">&quot;status === &#39;running&#39;&quot;</span><span class="op">&gt;&lt;/</span>span<span class="op">&gt;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    View thought <span class="bu">process</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="op">&lt;/</span>summary<span class="op">&gt;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="op">&lt;</span>div <span class="kw">class</span><span class="op">=</span><span class="st">&quot;process-steps&quot;</span><span class="op">&gt;</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;</span>div v<span class="op">-</span><span class="cf">for</span><span class="op">=</span><span class="st">&quot;log in msg.logs&quot;</span> <span class="kw">class</span><span class="op">=</span><span class="st">&quot;step-item&quot;</span><span class="op">&gt;</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>      <span class="op">&lt;</span>div <span class="kw">class</span><span class="op">=</span><span class="st">&quot;step-header&quot;</span><span class="op">&gt;</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">&lt;</span>span <span class="kw">class</span><span class="op">=</span><span class="st">&quot;step-icon&quot;</span><span class="op">&gt;</span>🔧<span class="op">&lt;/</span>span<span class="op">&gt;</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        <span class="op">&lt;</span>span <span class="kw">class</span><span class="op">=</span><span class="st">&quot;step-title&quot;</span><span class="op">&gt;</span>{{ log<span class="op">.</span><span class="at">title</span> }}<span class="op">&lt;/</span>span<span class="op">&gt;</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>      <span class="op">&lt;/</span>div<span class="op">&gt;</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>      <span class="op">&lt;</span>div <span class="kw">class</span><span class="op">=</span><span class="st">&quot;step-details&quot;</span> v<span class="op">-</span><span class="cf">if</span><span class="op">=</span><span class="st">&quot;log.details&quot;</span><span class="op">&gt;</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        <span class="op">&lt;</span>pre<span class="op">&gt;</span>{{ <span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(log<span class="op">.</span><span class="at">details</span><span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>) }}<span class="op">&lt;/</span>pre<span class="op">&gt;</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>      <span class="op">&lt;/</span>div<span class="op">&gt;</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;/</span>div<span class="op">&gt;</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="op">&lt;/</span>div<span class="op">&gt;</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;/</span>details<span class="op">&gt;</span></span></code></pre></div>
+<h3 id="52-文件管理模块">5.2 文件管理模块</h3>
+<h4 id="521-文件上传">5.2.1 文件上传</h4>
+<ul>
+<li><strong>多文件选择</strong>: 支持同时选择多个文件</li>
+<li><strong>文件预览</strong>: 上传前显示文件名和移除按钮</li>
+<li><strong>��度反馈</strong>: 上传成功/失败有视觉反馈</li>
+</ul>
+<h4 id="522-文件展示">5.2.2 文件展示</h4>
+<ul>
+<li><strong>侧边栏</strong>: 显示会话生成的所有文件</li>
+<li><strong>文件卡片</strong>: 在AI消息中显示生成的文件</li>
+<li><strong>下载功能</strong>: 点击文件直接下载</li>
+</ul>
+<h4 id="523-文件刷新机制">5.2.3 文件刷新机制</h4>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> fetchFiles <span class="op">=</span> <span class="kw">async</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>currentSessionPath<span class="op">.</span><span class="at">value</span>) <span class="cf">return</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> res <span class="op">=</span> <span class="cf">await</span> axios<span class="op">.</span><span class="fu">get</span>(<span class="st">&#39;http://localhost:8000/api/files&#39;</span><span class="op">,</span> {</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      params<span class="op">:</span> { path<span class="op">:</span> currentSessionPath<span class="op">.</span><span class="at">value</span> }</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (res<span class="op">.</span><span class="at">data</span><span class="op">.</span><span class="at">files</span>) {</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      fileList<span class="op">.</span><span class="at">value</span> <span class="op">=</span> res<span class="op">.</span><span class="at">data</span><span class="op">.</span><span class="at">files</span><span class="op">.</span><span class="fu">map</span>((f<span class="op">:</span> <span class="dt">any</span>) <span class="kw">=&gt;</span> ({</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">...</span>f<span class="op">,</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        url<span class="op">:</span> <span class="vs">`http://localhost:8000/api/download?path=</span><span class="sc">${</span><span class="pp">encodeURIComponent</span>(f<span class="op">.</span><span class="at">path</span>)<span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      }))</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span> (e) {</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(<span class="st">&#39;Failed to fetch files&#39;</span><span class="op">,</span> e)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">// 触发刷新的时机：</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">// 1. 会话创建时</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">// 2. 工具启动时</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">// 3. 任务完成时</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">// 4. 用户手动刷新</span></span></code></pre></div>
+<h3 id="53-实时通信模块">5.3 实时通信模块</h3>
+<h4 id="531-websocket-连接管理">5.3.1 WebSocket 连接管理</h4>
+<ul>
+<li><strong>自动重连</strong>: 连接断开后3秒自动重连</li>
+<li><strong>心跳检测</strong>: 处理 <code>pong</code> 消息保持连接</li>
+<li><strong>线程关联</strong>: 使用 <code>thread_id</code>
+关联WebSocket连接</li>
+</ul>
+<h4 id="532-事件处理策略">5.3.2 事件处理策略</h4>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 事件类型映射</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> eventHandlers <span class="op">=</span> {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  session_created<span class="op">:</span> handleSessionCreated<span class="op">,</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  tool_start<span class="op">:</span> handleToolStart<span class="op">,</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  assistant_call<span class="op">:</span> handleAssistantCall<span class="op">,</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  task_result<span class="op">:</span> handleTaskResult<span class="op">,</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  error<span class="op">:</span> handleError</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">// 统一事件处理</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> handleSocketMessage <span class="op">=</span> (data<span class="op">:</span> <span class="dt">any</span>) <span class="kw">=&gt;</span> {</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> handler <span class="op">=</span> eventHandlers[data<span class="op">.</span><span class="at">event</span>]</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (handler) {</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">handler</span>(data)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scrollToBottom</span>() <span class="co">// 每次事件后滚动到底部</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="6-uiux-设计">6. UI/UX 设计</h2>
+<h3 id="61-视觉设计">6.1 视觉设计</h3>
+<h4 id="611-颜色方案">6.1.1 颜色方案</h4>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode css"><code class="sourceCode css"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="in">:root</span> {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="va">--bg-dark</span><span class="ch">:</span> <span class="cn">#F7F8FC</span><span class="op">;</span>           <span class="co">/* 背景色 */</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="va">--surface-dark</span><span class="ch">:</span> <span class="cn">#FFFFFF</span><span class="op">;</span>      <span class="co">/* 表面色 */</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="va">--surface-light</span><span class="ch">:</span> <span class="cn">#F1F2F7</span><span class="op">;</span>     <span class="co">/* 浅表面色 */</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="va">--text-primary</span><span class="ch">:</span> <span class="cn">#1F2933</span><span class="op">;</span>      <span class="co">/* 主要文字 */</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="va">--text-secondary</span><span class="ch">:</span> <span class="cn">#4A5568</span><span class="op">;</span>    <span class="co">/* 次要文字 */</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="va">--accent-blue</span><span class="ch">:</span> <span class="cn">#4E75F6</span><span class="op">;</span>       <span class="co">/* 强调色 */</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="va">--user-msg-bg</span><span class="ch">:</span> <span class="cn">#DDE5FF</span><span class="op">;</span>       <span class="co">/* 用户消息背景 */</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="va">--border-color</span><span class="ch">:</span> <span class="cn">#CBD5E1</span><span class="op">;</span>      <span class="co">/* 边框色 */</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h4 id="612-布局结构">6.1.2 布局结构</h4>
+<pre><code>┌─────────────────────────────────────────────┐
+│ 主内容区                                    │ 侧边栏
+│                                             │ ┌─────────────┐
+│ ┌─────────────────────────────────────┐    │ │ 会话文件    │
+│ │ 欢迎界面 / 聊天区域                  │    │ │             │
+│ │                                     │    │ │ 文件列表    │
+│ │                                     │    │ │             │
+│ └─────────────────────────────────────┘    │ └─────────────┘
+│                                             │
+│ ┌─────────────────────────────────────┐    │
+│ │ 输入区域                            │    │
+│ │ [上传] [输入框] [发送]              │    │
+│ └─────────────────────────────────────┘    │
+└─────────────────────────────────────────────┘</code></pre>
+<h3 id="62-交互设计">6.2 交互设计</h3>
+<h4 id="621-输入交互">6.2.1 输入交互</h4>
+<ul>
+<li><strong>回车发送</strong>: 支持 Enter 键发送消息</li>
+<li><strong>文件拖放</strong>: 支持文件拖放上传（通过
+input[type=file]）</li>
+<li><strong>多行输入</strong>: 文本框支持多行输入，自动扩展高度</li>
+</ul>
+<h4 id="622-状态反馈">6.2.2 状态反馈</h4>
+<ul>
+<li><strong>加载状态</strong>: 运行时有 spinner 动画</li>
+<li><strong>成功反馈</strong>: 操作成功有视觉提示</li>
+<li><strong>错误处理</strong>: 错误信息清晰展示</li>
+</ul>
+<h4 id="623-响应式设计">6.2.3 响应式设计</h4>
+<ul>
+<li><strong>侧边栏切换</strong>: 小屏幕时可隐藏侧边栏</li>
+<li><strong>滚动优化</strong>: 新消息自动滚动到可视区域</li>
+<li><strong>触摸友好</strong>: 按钮和交互元素适合触摸操作</li>
+</ul>
+<h2 id="7-性能优化">7. 性能优化</h2>
+<h3 id="71-渲染优化">7.1 渲染优化</h3>
+<ol type="1">
+<li><strong>虚拟滚动</strong>: 聊天消息过多时考虑虚拟滚动</li>
+<li><strong>条件渲染</strong>: 使用 <code>v-if</code>
+避免不必要的渲染</li>
+<li><strong>计算属性</strong>: 复杂计算使用 <code>computed</code>
+缓存结果</li>
+</ol>
+<h3 id="72-网络优化">7.2 网络优化</h3>
+<ol type="1">
+<li><strong>请求合并</strong>: 相关请求适当合并</li>
+<li><strong>缓存策略</strong>: 静态资源使用缓存</li>
+<li><strong>连接复用</strong>: WebSocket 连接复用</li>
+</ol>
+<h3 id="73-内存管理">7.3 内存管理</h3>
+<ol type="1">
+<li><strong>及时清理</strong>: 不再需要的状态及时清理</li>
+<li><strong>事件解绑</strong>: 组件销毁时解绑事件监听器</li>
+<li><strong>大文件处理</strong>: 大文件上传分片处理</li>
+</ol>
+<h2 id="8-错误处理与监控">8. 错误处理与监控</h2>
+<h3 id="81-错误类型">8.1 错误类型</h3>
+<ol type="1">
+<li><strong>网络错误</strong>: 连接失败、超时等</li>
+<li><strong>数据错误</strong>: 数据格式错误、验证失败</li>
+<li><strong>业务错误</strong>: 后端返回的业务错误</li>
+<li><strong>前端错误</strong>: JavaScript 运行时错误</li>
+</ol>
+<h3 id="82-错误处理策略">8.2 错误处理策略</h3>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 统一错误处理</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> handleError <span class="op">=</span> (error<span class="op">:</span> <span class="dt">any</span><span class="op">,</span> context<span class="op">:</span> <span class="dt">string</span>) <span class="kw">=&gt;</span> {</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(<span class="vs">`[</span><span class="sc">${</span>context<span class="sc">}</span><span class="vs">]`</span><span class="op">,</span> error)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 用户友好的错误提示</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> userMessage <span class="op">=</span> <span class="st">&#39;操作失败&#39;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (error<span class="op">.</span><span class="at">message</span>) userMessage <span class="op">+=</span> <span class="vs">`: </span><span class="sc">${</span>error<span class="op">.</span><span class="at">message</span><span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (error<span class="op">.</span><span class="at">response</span><span class="op">?.</span><span class="at">data</span>) userMessage <span class="op">+=</span> <span class="vs">` (</span><span class="sc">${</span><span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(error<span class="op">.</span><span class="at">response</span><span class="op">.</span><span class="at">data</span>)<span class="sc">}</span><span class="vs">)`</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addSystemMessage</span>(userMessage)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 恢复状态</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  status<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="st">&#39;idle&#39;</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h3 id="83-监控指标">8.3 监控指标</h3>
+<ol type="1">
+<li><strong>连接状态</strong>: WebSocket 连接成功率</li>
+<li><strong>响应时间</strong>: API 请求响应时间</li>
+<li><strong>错误率</strong>: 各类错误的发生频率</li>
+<li><strong>用户行为</strong>: 关键操作的使用频率</li>
+</ol>
+<h2 id="9-部署与构建">9. 部署与构建</h2>
+<h3 id="91-开发环境">9.1 开发环境</h3>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装依赖</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 启动开发服务器</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run dev</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 访问地址</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="ex">http://localhost:5173</span></span></code></pre></div>
+<h3 id="92-生产构建">9.2 生产构建</h3>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 类型检查 + 构建</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run build</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 预览构建结果</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run preview</span></code></pre></div>
+<h3 id="93-构建配置">9.3 构建配置</h3>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">// vite.config.ts</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { defineConfig } <span class="im">from</span> <span class="st">&#39;vite&#39;</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> vue <span class="im">from</span> <span class="st">&#39;@vitejs/plugin-vue&#39;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="im">default</span> <span class="fu">defineConfig</span>({</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  plugins<span class="op">:</span> [<span class="fu">vue</span>()]<span class="op">,</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 其他配置...</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+<h2 id="10-扩展与维护">10. 扩展与维护</h2>
+<h3 id="101-功能扩展点">10.1 功能扩展点</h3>
+<ol type="1">
+<li><strong>插件系统</strong>: 支持功能插件扩展</li>
+<li><strong>主题系统</strong>: 支持多主题切换</li>
+<li><strong>国际化</strong>: 支持多语言</li>
+<li><strong>快捷键</strong>: 自定义快捷键支持</li>
+</ol>
+<h3 id="102-代码维护建议">10.2 代码维护建议</h3>
+<ol type="1">
+<li><strong>组件拆分</strong>: 复杂功能拆分为子组件</li>
+<li><strong>工具函数</strong>: 通用逻辑提取为工具函数</li>
+<li><strong>类型定义</strong>: 完善 TypeScript 类型定义</li>
+<li><strong>文档更新</strong>: 代码变更时同步更新文档</li>
+</ol>
+<h3 id="103-测试策略">10.3 测试策略</h3>
+<ol type="1">
+<li><strong>单元测试</strong>: 工具函数和组件逻辑测试</li>
+<li><strong>集成测试</strong>: 模块间集成测试</li>
+<li><strong>E2E测试</strong>: 完整用户流程测试</li>
+<li><strong>性能测试</strong>: 关键路径性能测试</li>
+</ol>
+<h2 id="11-总结">11. 总结</h2>
+<p>DeepSearchResearcher UI
+是一个设计良好的现代化前端应用，具有以下特点：</p>
+<h3 id="111-技术优势">11.1 技术优势</h3>
+<ol type="1">
+<li><strong>现代化技术栈</strong>: 使用 Vue 3、TypeScript、Vite
+等现代技术</li>
+<li><strong>良好架构</strong>: 清晰的模块划分和数据流设计</li>
+<li><strong>优秀体验</strong>: 流畅的交互和实时的状态反馈</li>
+<li><strong>可维护性</strong>: 类型安全、代码结构清晰</li>
+</ol>
+<h3 id="112-业务价值">11.2 业务价值</h3>
+<ol type="1">
+<li><strong>高效协作</strong>: 支持 AI 助手与用户的高效协作</li>
+<li><strong>文件管理</strong>: 完整的文件上传、生成、下载流程</li>
+<li><strong>过程透明</strong>: 思维过程可视化，增强用户信任</li>
+<li><strong>实时交互</strong>: WebSocket 实现真正的实时交互</li>
+</ol>
+<h3 id="113-改进方向">11.3 改进方向</h3>
+<ol type="1">
+<li><strong>组件化</strong>: 进一步拆分复杂组件</li>
+<li><strong>状态管理</strong>: 考虑使用 Pinia 管理复杂状态</li>
+<li><strong>测试覆盖</strong>: 增加测试覆盖率</li>
+<li><strong>性能监控</strong>: 增加性能监控和优化</li>
+</ol>
+<hr />
+<p><strong>文档版本</strong>: 1.0<br />
+<strong>最后更新</strong>: 2026-05-23<br />
+<strong>维护者</strong>: DeepSearchResearcher 团队</p>
+</body>
+</html>

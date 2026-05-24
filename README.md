@@ -14,6 +14,11 @@
 
 [English](./README.en.md) · 简体中文
 
+<img width="2464" height="1398" alt="image" src="https://github.com/user-attachments/assets/0fc490dd-2784-4dd8-89dc-9c0bc82f860e" />
+<img width="2528" height="1404" alt="image" src="https://github.com/user-attachments/assets/c9cb8c1f-1a60-42a7-8a92-ba3558ebb188" />
+
+
+
 </div>
 
 ---

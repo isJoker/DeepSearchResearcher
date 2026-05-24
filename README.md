@@ -1,305 +1,230 @@
-# DeepSearchResearcher - 深度搜索研究智能体系统
+<div align="center">
+
+# 🔍 DeepSearchResearcher
+
+**基于多智能体协作的深度研究助手**
+
+一句话提问，自动联网搜索 + 数据库查询 + 知识库检索 + 生成 Markdown / PDF 研究报告。
+
+[![Python](https://img.shields.io/badge/Python-3.13+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-0.1+-1C3C3C)](https://langchain-ai.github.io/langgraph/)
+[![Vue](https://img.shields.io/badge/Vue-3.5+-4FC08D?logo=vue.js&logoColor=white)](https://vuejs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[English](./README.en.md) · 简体中文
+
+</div>
 
 ---
 
-## 中文版技术方案设计文档
+## ✨ 特性一览
 
-### 一、项目概述
-
-DeepSearchResearcher是一个基于多智能体协作架构的智能研究助手系统，通过集成LangChain/LangGraph框架实现复杂任务的自动化处理。系统能够自动协调网络搜索、数据库查询、知识库检索等多个专业智能体，完成信息收集、分析、报告生成等全流程任务，并通过WebSocket实现实时进度反馈。
-
-**核心特性：**
-- 多智能体协作架构，支持复杂任务分解与编排
-- 三大专业子智能体：网络搜索、数据库查询、RAGFlow知识库
-- 实时通信机制，任务执行过程可视化
-- 多格式文档生成（Markdown/PDF）
-- 多用户并发支持，会话数据隔离
+- 🤖 **多智能体协作** — 主智能体自动拆解任务，调度网络搜索 / 数据库 / 知识库三个专业子智能体
+- 🌐 **实时进度反馈** — WebSocket 全程推送工具调用、子智能体调用、最终结果
+- 📄 **多格式产出** — 自动生成 Markdown 报告并一键转换为 PDF
+- 🔒 **会话级隔离** — 基于 `ContextVar` 实现协程级隔离，天然支持多用户并发
+- 📎 **支持文件上传** — 上传 PDF / Word / Excel 作为研究材料，Agent 自动读取分析
+- 🧩 **易扩展** — 新增子智能体或工具只需在对应目录加一个文件
 
 ---
 
-### 二、系统架构设计
+## 🚀 快速开始
 
-#### 2.1 整体架构
-
-系统采用分层架构设计，分为前端交互层、API服务层、智能体编排层、工具执行层四个层次：
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    前端交互层 (Vue3)                      │
-│              WebSocket实时通信 / 文件管理                  │
-└────────────────────┬────────────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────────────┐
-│                  API服务层 (FastAPI)                     │
-│        REST API / WebSocket / 文件上传下载                │
-└────────────────────┬────────────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────────────┐
-│              智能体编排层 (LangGraph)                     │
-│         主智能体协调 / 子智能体调度 / 状态管理              │
-└────────────────────┬────────────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────────────┐
-│                  工具执行层 (Tools)                       │
-│   网络搜索 / 数据库查询 / 知识库检索 / 文档生成            │
-└─────────────────────────────────────────────────────────┘
-```
-
-#### 2.2 核心模块设计
-
-**1. 主智能体 (Main Agent)**
-- 职责：任务分解、子智能体协调、结果整合
-- 技术：基于`deepagents.create_deep_agent`工厂方法构建
-- 特性：支持流式处理、工具调用、子智能体委托
-
-**2. 子智能体 (Sub Agents)**
-
-| 智能体名称 | 功能描述 | 核心工具 |
-|-----------|---------|---------|
-| 网络搜索助手 | 互联网公开信息检索 | Tavily Search API |
-| 数据库查询助手 | 企业内部数据库查询 | MySQL Connector |
-| RAGFlow助手 | 企业知识库检索 | RAGFlow SDK |
-
-**3. API服务模块**
-- REST API：任务提交、文件上传下载
-- WebSocket：实时消息推送、进度反馈
-- 会话管理：多用户并发、会话隔离
-
-**4. 上下文管理模块**
-- 技术：Python ContextVar实现协程级数据隔离
-- 功能：会话目录管理、Thread ID绑定
-
----
-
-### 三、核心技术栈
-
-#### 3.1 后端技术栈
-
-| 技术组件 | 版本 | 用途 |
-|---------|------|------|
-| Python | 3.13+ | 核心开发语言 |
-| LangChain | 0.2.0+ | LLM应用框架 |
-| LangGraph | 0.1.0+ | 智能体工作流编排 |
-| FastAPI | 0.100.0+ | 异步Web框架 |
-| Uvicorn | 0.20.0+ | ASGI服务器 |
-| MySQL Connector | 8.0+ | 数据库驱动 |
-| Tavily Python | 0.3.0+ | 网络搜索API |
-| RAGFlow SDK | 0.1.0+ | 知识库SDK |
-
-#### 3.2 前端技术栈
-
-| 技术组件 | 版本 | 用途 |
-|---------|------|------|
-| Vue.js | 3.x | 前端框架 |
-| TypeScript | 5.x | 类型安全 |
-| Vite | 5.x | 构建工具 |
-| Axios | 1.x | HTTP客户端 |
-| Marked | 4.x | Markdown解析 |
-
-#### 3.3 大模型服务
-
-- 支持OpenAI API兼容接口
-- 配置灵活，支持自定义Base URL
-- 当前默认模型：GPT-4o-mini
-
----
-
-### 四、数据流程设计
-
-#### 4.1 任务执行流程
-
-```
-用户请求 → API接收 → 创建会话目录 → 设置上下文 
-    → 主智能体启动 → 任务分解 → 子智能体调度 
-    → 工具执行 → 结果汇总 → 文档生成 → WebSocket推送 
-    → 清理上下文 → 返回结果
-```
-
-#### 4.2 WebSocket消息类型
-
-| 事件类型 | 说明 | 数据结构 |
-|---------|------|---------|
-| session_created | 会话目录创建 | `{path: "/output/session_xxx"}` |
-| tool_start | 工具调用开始 | `{tool_name, args}` |
-| assistant_call | 子智能体调用 | `{assistant_name, args}` |
-| task_result | 任务最终结果 | `{result: "..."}` |
-| error | 错误信息 | `{message: "..."}` |
-
-#### 4.3 会话数据隔离机制
-
-**核心技术：Python ContextVar**
-
-```python
-# 存储当前会话目录
-_session_dir_ctx: ContextVar[Optional[str]] = ContextVar("session_dir")
-
-# 存储当前会话Thread ID
-_thread_id_ctx: ContextVar[Optional[str]] = ContextVar("thread_id")
-```
-
-**隔离原理：**
-- 每个异步任务(Task)拥有独立的上下文环境
-- ContextVar自动隔离不同协程的数据
-- 避免多用户并发时的数据串混
-
----
-
-### 五、核心模块详解
-
-#### 5.1 主智能体配置
-
-```python
-main_agent = create_deep_agent(
-    model=model,                    # LLM模型实例
-    system_prompt=system_prompt,    # 系统提示词
-    tools=[generate_markdown, convert_md_to_pdf, read_file_content],
-    checkpointer=InMemorySaver(),   # 状态持久化
-    subagents=[                     # 子智能体列表
-        database_query_agent,
-        network_search_agent,
-        knowledge_base_agent
-    ]
-)
-```
-
-#### 5.2 工具模块设计
-
-**网络搜索工具 (tavily_tool.py)**
-- 集成Tavily搜索API
-- 支持普通/新闻/金融等多种主题
-- 返回结构化搜索结果
-
-**数据库查询工具 (db_tool.py)**
-- `list_sql_tables`: 列出数据库表
-- `get_table_data`: 预览表数据
-- `execute_sql_query`: 执行自定义SQL
-
-**知识库检索工具 (ragflow_tools.py)**
-- `get_assistant_list`: 获取可用助手列表
-- `create_ask_delete`: 创建会话提问并销毁
-
-**文档生成工具 (markdown_tools.py / pdf_tools.py)**
-- Markdown文档生成
-- PDF格式转换
-
-#### 5.3 监控模块 (monitor.py)
-
-**设计模式：单例模式**
-
-```python
-class ToolMonitor:
-    _instance = None
-    
-    def report_tool(self, tool_name, args):
-        # 上报工具调用
-        
-    def report_assistant(self, assistant_name, args):
-        # 上报子智能体调用
-        
-    def report_task_result(self, result):
-        # 上报最终结果
-```
-
-**推送机制：**
-- 通过WebSocket向特定Thread ID推送消息
-- 使用`asyncio.run_coroutine_threadsafe`实现跨线程调度
-
----
-
-### 六、部署与运行
-
-#### 6.1 环境准备
+### 1. 克隆并安装依赖
 
 ```bash
-# 克隆项目
-git clone [项目地址]
+git clone https://github.com/isJoker/DeepSearchResearcher.git
+cd DeepSearchResearcher
 
-# 安装依赖
+# 后端依赖（建议使用 Python 3.13+ 虚拟环境）
 pip install -r requirements.txt
 
-# 配置环境变量 (.env文件)
-OPENAI_API_KEY=your_api_key
+# 前端依赖
+cd ui && npm install && cd ..
+```
+
+### 2. 配置环境变量
+
+在项目根目录创建 `.env` 文件：
+
+```dotenv
+# ===== LLM（OpenAI 或兼容接口）=====
+OPENAI_API_KEY=sk-xxx
 OPENAI_BASE_URL=https://api.openai.com/v1
-TAVILY_API_KEY=your_tavily_key
+
+# ===== 网络搜索（Tavily）=====
+TAVILY_API_KEY=tvly-xxx
+
+# ===== MySQL 数据库 =====
 MYSQL_HOST=localhost
+MYSQL_PORT=3306
 MYSQL_USER=root
 MYSQL_PASSWORD=your_password
 MYSQL_DATABASE=your_database
+# 可选
+# MYSQL_CHARSET=utf8mb4
+# MYSQL_COLLATION=utf8mb4_unicode_ci
+
+# ===== RAGFlow 知识库（可选）=====
+RAGFLOW_API_KEY=ragflow-xxx
+RAGFLOW_API_URL=http://your-ragflow-host
 ```
 
-#### 6.2 启动服务
+> 💡 默认使用模型 `gpt-4o-mini`，如需更换可修改 `agent/llm.py`。
+
+### 3. 启动服务
 
 ```bash
-# 启动后端服务
-cd api
-python server.py
+# 终端 1：启动后端（项目根目录下）
+python -m api.server
+# 等价：cd api && python server.py
 
-# 启动前端服务
-cd ui
-npm install
-npm run dev
+# 终端 2：启动前端
+cd ui && npm run dev
 ```
 
-#### 6.3 访问地址
+### 4. 访问
 
-- 后端API: http://localhost:8000
-- 前端界面: http://localhost:5173
-- API文档: http://localhost:8000/docs
+| 服务 | 地址 |
+| --- | --- |
+| 前端界面 | http://localhost:5173 |
+| 后端 API | http://localhost:8000 |
+| API 文档 | http://localhost:8000/docs |
 
 ---
 
-### 七、项目结构
+## 🏗 系统架构
+
+```mermaid
+flowchart TD
+    UI[Vue 3 前端<br/>WebSocket / 文件管理]
+    API[FastAPI 服务层<br/>REST / WebSocket / 上传下载]
+    Main[主智能体 Main Agent<br/>任务拆解 · 结果汇总]
+    Sub1[网络搜索智能体<br/>Tavily]
+    Sub2[数据库查询智能体<br/>MySQL]
+    Sub3[知识库智能体<br/>RAGFlow]
+    Out[Markdown / PDF 报告]
+
+    UI <-->|HTTP / WS| API
+    API --> Main
+    Main --> Sub1
+    Main --> Sub2
+    Main --> Sub3
+    Main --> Out
+```
+
+**调用流程：** 用户提问 → 创建会话目录 → 绑定 `ContextVar` → 主智能体流式执行 → 子智能体并行调度 → 工具调用 → 结果汇总 → 生成文档 → WebSocket 推送 → 释放上下文。
+
+---
+
+## 🧠 核心模块
+
+### 主智能体（agent/main_agent.py）
+
+通过 `deepagents.create_deep_agent` 工厂方法构建，挂载工具与子智能体：
+
+```python
+main_agent = create_deep_agent(
+    model=model,
+    system_prompt=main_agent_config['system_prompt'],
+    tools=[generate_markdown, convert_md_to_pdf, read_file_content],
+    checkpointer=InMemorySaver(),
+    subagents=[
+        database_query_agent,
+        network_search_agent,
+        knowledge_base_agent,
+    ],
+)
+```
+
+### 子智能体（agent/sub_agent/）
+
+| 子智能体 | 功能 | 核心工具 |
+| --- | --- | --- |
+| `network_search_agent` | 互联网公开信息检索 | Tavily Search API |
+| `database_query_agent` | 企业内部 MySQL 查询 | `list_sql_tables` / `get_table_data` / `execute_sql_query` |
+| `knowledge_base_agent` | RAGFlow 知识库问答 | `get_assistant_list` / `create_ask_delete` |
+
+### 工具（tools/）
+
+| 文件 | 职责 |
+| --- | --- |
+| `tavily_tool.py` | 网络搜索（支持 general / news / finance 主题） |
+| `db_tool.py` | MySQL 表列举、预览、自定义 SQL 执行 |
+| `ragflow_tools.py` | RAGFlow 助手列表、提问、会话管理 |
+| `markdown_tools.py` / `pdf_tools.py` | 生成 Markdown 与 PDF |
+| `upload_file_read_tool.py` | 读取上传的 PDF / Word / Excel / Text |
+
+### WebSocket 消息协议
+
+| 事件 | 说明 | 数据 |
+| --- | --- | --- |
+| `session_dir` | 会话目录已创建 | `{ path: "/output/session_xxx" }` |
+| `tool_start` | 工具调用开始 | `{ tool_name, args }` |
+| `assistant_call` | 子智能体调用 | `{ assistant_name, args }` |
+| `task_result` | 任务最终结果 | `{ result }` |
+| `error` | 异常 | `{ message }` |
+
+### 会话隔离原理
+
+```python
+# api/context.py
+_session_dir_ctx: ContextVar[Optional[str]] = ContextVar("session_dir")
+_thread_id_ctx:  ContextVar[Optional[str]] = ContextVar("thread_id")
+```
+
+每个异步任务拥有独立 `ContextVar` 视图，工具调用、监控推送都从中读取，天然避免多用户并发串数据。
+
+---
+
+## 📂 目录结构
 
 ```
 DeepSearchResearcher/
-├── agent/                 # 智能体模块
-│   ├── main_agent.py     # 主智能体
-│   ├── llm.py            # LLM配置
-│   ├── load_prompts.py   # 提示词加载
-│   └── sub_agent/        # 子智能体
-│       ├── network_search_agent.py
-│       ├── database_query_agent.py
-│       └── knowledge_base_agent.py
-├── api/                   # API服务模块
-│   ├── server.py         # FastAPI服务
-│   ├── monitor.py        # 监控模块
-│   ├── context.py        # 上下文管理
-│   └── logger.py         # 日志模块
-├── tools/                 # 工具模块
-│   ├── tavily_tool.py    # 网络搜索
-│   ├── db_tool.py        # 数据库查询
-│   ├── ragflow_tools.py  # 知识库检索
-│   ├── markdown_tools.py # Markdown生成
-│   └── pdf_tools.py      # PDF转换
-├── utils/                 # 工具函数
-├── prompt/                # 提示词配置
-│   └── prompts.yaml
-├── ui/                    # 前端项目
-│   └── src/
-│       └── App.vue       # 主应用组件
-├── output/                # 输出目录
-├── updated/               # 上传文件目录
-├── requirements.txt       # 依赖清单
-└── README.md             # 项目文档
+├── agent/                 # 智能体层
+│   ├── main_agent.py     # 主智能体编排
+│   ├── llm.py            # LLM 初始化
+│   ├── load_prompts.py   # YAML 提示词加载
+│   └── sub_agent/        # 三个子智能体
+├── api/                   # API 服务层
+│   ├── server.py         # FastAPI 入口（REST + WebSocket）
+│   ├── monitor.py        # 单例式监控/推送
+│   ├── context.py        # ContextVar 会话隔离
+│   └── logger.py
+├── tools/                 # 工具集
+├── prompt/prompts.yaml    # 集中式提示词配置
+├── utils/                 # 通用工具函数
+├── ui/                    # Vue 3 + Vite 前端
+├── output/                # 报告输出（按 session 隔离）
+├── updated/               # 上传文件（按 session 隔离）
+├── sql/                   # 示例数据
+└── requirements.txt
 ```
 
 ---
 
-### 八、核心优势
+## 🛠 技术栈
 
-1. **智能编排**：主智能体自动分解复杂任务，协调多个专业子智能体协作完成
-2. **实时反馈**：通过WebSocket实时推送任务执行进度，用户体验友好
-3. **数据隔离**：基于ContextVar实现协程级数据隔离，支持多用户并发
-4. **扩展性强**：模块化设计，易于添加新的子智能体和工具
-5. **配置灵活**：YAML配置提示词，环境变量管理敏感信息
+**后端**　Python 3.13 · LangChain · LangGraph · deepagents · FastAPI · Uvicorn · MySQL Connector · Tavily · RAGFlow SDK
+**前端**　Vue 3 · TypeScript · Vite · Axios · Marked
+**LLM**　 任意 OpenAI 兼容接口（默认 `gpt-4o-mini`）
 
 ---
 
-### 九、应用场景
+## 💡 应用场景
 
-- 企业市场调研报告自动生成
-- 竞品分析与行业研究
-- 内部数据查询与分析报告
-- 知识库问答与文档生成
-- 多源信息整合与报告撰写
+- 行业 / 竞品研究报告自动撰写
+- 企业内部数据 + 外部信息的混合分析
+- 知识库问答与摘要生成
+- 多源信息整合的「深度研究」类任务
 
+---
+
+## 🤝 贡献
+
+欢迎 Issue 和 PR！如果你想新增子智能体或工具，参考 `agent/sub_agent/` 下任一现有 agent 即可快速复制扩展。
+
+## 📄 License
+
+[MIT](./LICENSE)
